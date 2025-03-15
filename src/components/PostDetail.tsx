@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { fetchPostById } from "../services/api";
 import { Post } from "../types";
 import SkeletonPostDetail from "./SkeletonPostDetail";
+import styles from "./PostDetail.module.css";
 
 interface PostDetailProps {
   postId: string;
@@ -44,12 +45,12 @@ const PostDetail = ({ postId }: PostDetailProps) => {
   }
 
   return (
-    <div className="post-detail">
-      <h1>{post.title}</h1>
-      <div className="post-content">
+    <div className={styles.postDetail}>
+      <h1 className={styles.title}>{post.title}</h1>
+      <div className={styles.content}>
         <p>{post.body}</p>
       </div>
-      <div className="post-meta">
+      <div className={styles.meta}>
         <p>Post ID: {post.id}</p>
         <p>User ID: {post.userId}</p>
       </div>

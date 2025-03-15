@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchTerm } from "../redux/postSlice";
 import { RootState } from "../redux/store";
+import styles from "./SearchBar.module.css";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
@@ -17,13 +18,13 @@ const SearchBar = () => {
   }, [localSearchTerm, dispatch]);
 
   return (
-    <div className="search-bar">
+    <div className={styles.searchBar}>
       <input
         type="text"
         placeholder="Search posts..."
         value={localSearchTerm}
         onChange={(e) => setLocalSearchTerm(e.target.value)}
-        className="search-input"
+        className={styles.searchInput}
       />
     </div>
   );

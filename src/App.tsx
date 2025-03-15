@@ -4,15 +4,16 @@ import { store } from "./redux/store";
 import HomePage from "./pages/HomePage";
 import PostDetailPage from "./pages/PostDetailPage";
 import Header from "./components/Header";
-import "./App.css";
+import styles from "./App.module.css";
+import "./styles/global.css"; // Global styles
 
 function App() {
   return (
     <Provider store={store}>
       <Router>
-        <div className="app-container">
+        <div className={styles.appContainer}>
           <Header />
-          <main>
+          <main className={styles.main}>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/post/:id" element={<PostDetailPage />} />

@@ -1,0 +1,29 @@
+.postDetailPage {
+  background-color: white;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.backButton {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 20px;
+  background-color: #f8d7da;
+  border-radius: 4px;
+  margin: 20px auto;
+  max-width: 600px;
+}

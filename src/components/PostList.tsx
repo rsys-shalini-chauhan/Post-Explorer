@@ -5,6 +5,7 @@ import { RootState } from "../redux/store";
 import PostCard from "./PostCard";
 import SkeletonCard from "./SkeletonCard";
 import { AppDispatch } from "../redux/store";
+import styles from "./PostList.module.css";
 
 const PostList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,7 +23,7 @@ const PostList = () => {
 
   if (status === "loading") {
     return (
-      <div className="post-list">
+      <div className={styles.postList}>
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <SkeletonCard key={i} />
         ))}
@@ -41,7 +42,7 @@ const PostList = () => {
   }
 
   return (
-    <div className="post-list">
+    <div className={styles.postList}>
       {filteredPosts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}

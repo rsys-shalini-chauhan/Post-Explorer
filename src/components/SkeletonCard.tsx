@@ -1,9 +1,12 @@
+import styles from "./SkeletonCard.module.css";
+import cardStyles from "./PostCard.module.css";
+
 const SkeletonCard = () => {
   return (
-    <div className="post-card skeleton">
-      <div className="skeleton-title"></div>
-      <div className="skeleton-body"></div>
-      <div className="skeleton-button"></div>
+    <div className={`${cardStyles.postCard} ${styles.skeleton}`}>
+      <div className={styles.skeletonTitle}></div>
+      <div className={styles.skeletonBody}></div>
+      <div className={styles.skeletonButton}></div>
     </div>
   );
 };

@@ -2,7 +2,28 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
+import { BrowserRouter } from "react-router-dom";
+import { vi } from "vitest";
 import PostList from "../components/PostList";
+import { Post } from "../types";
+
+// Mock the PostCard component to avoid router issues
+vi.mock("../components/PostCard", () => ({
+  default: (props: { post: Post }) => (
+    <div data-testid="post-card">
+      <h2>{props.post.title}</h2>
+      <p>{props.post.body.substring(0, 100)}...</p>
+      <button>View Details</button>
+    </div>
+  ),
+}));
+
+// Mock SkeletonCard to make it easier to test
+vi.mock("../components/SkeletonCard", () => ({
+  default: () => (
+    <div data-testid="skeleton-card" className="post-card skeleton"></div>
+  ),
+}));
 
 // Mock the redux store without middleware since we're just testing rendering
 const mockStore = configureMockStore();
@@ -21,11 +42,15 @@ describe("PostList Component", () => {
 
     render(
       <Provider store={store}>
-        <PostList />
+        <BrowserRouter>
+          <PostList />
+        </BrowserRouter>
       </Provider>
     );
 
-    expect(screen.getByText(/Loading posts.../i)).toBeInTheDocument();
+    // Check that skeleton cards are rendered
+    const skeletonCards = screen.getAllByTestId("skeleton-card");
+    expect(skeletonCards.length).toBeGreaterThan(0);
   });
 
   test("renders error state correctly", () => {
@@ -41,7 +66,9 @@ describe("PostList Component", () => {
 
     render(
       <Provider store={store}>
-        <PostList />
+        <BrowserRouter>
+          <PostList />
+        </BrowserRouter>
       </Provider>
     );
 
@@ -76,11 +103,18 @@ describe("PostList Component", () => {
 
     render(
       <Provider store={store}>
-        <PostList />
+        <BrowserRouter>
+          <PostList />
+        </BrowserRouter>
       </Provider>
     );
 
-    expect(screen.getByText(/Test Post 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Test Post 2/i)).toBeInTheDocument();
+    // Use getByRole to specifically target the headings
+    expect(
+      screen.getByRole("heading", { name: /Test Post 1/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Test Post 2/i })
+    ).toBeInTheDocument();
   });
 });

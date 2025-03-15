@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../redux/postSlice";
 import { RootState } from "../redux/store";
 import PostCard from "./PostCard";
+import SkeletonCard from "./SkeletonCard";
 import { AppDispatch } from "../redux/store";
 
 const PostList = () => {
@@ -18,7 +19,13 @@ const PostList = () => {
   }, [status, dispatch]);
 
   if (status === "loading") {
-    return <div className="loading">Loading posts...</div>;
+    return (
+      <div className="post-list">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <SkeletonCard key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (status === "failed") {

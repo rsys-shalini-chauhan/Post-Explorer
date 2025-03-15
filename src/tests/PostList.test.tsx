@@ -25,6 +25,27 @@ vi.mock("../components/SkeletonCard", () => ({
   ),
 }));
 
+// Mock the Pagination component
+vi.mock("../components/Pagination", () => ({
+  default: ({
+    currentPage,
+    totalPages,
+    onPageChange,
+  }: {
+    currentPage: number;
+    totalPages: number;
+    onPageChange: (page: number) => void;
+  }) => (
+    <div data-testid="pagination">
+      <button onClick={() => onPageChange(currentPage - 1)}>Prev</button>
+      <span>
+        Page {currentPage} of {totalPages}
+      </span>
+      <button onClick={() => onPageChange(currentPage + 1)}>Next</button>
+    </div>
+  ),
+}));
+
 // Mock the redux store without middleware since we're just testing rendering
 const mockStore = configureMockStore();
 
@@ -35,6 +56,11 @@ describe("PostList Component", () => {
         filteredPosts: [],
         status: "loading",
         error: null,
+        currentPage: 1,
+        postsPerPage: 6,
+        totalPages: 0,
+        searchTerm: "",
+        posts: [],
       },
     };
 
@@ -59,6 +85,11 @@ describe("PostList Component", () => {
         filteredPosts: [],
         status: "failed",
         error: "Failed to fetch posts",
+        currentPage: 1,
+        postsPerPage: 6,
+        totalPages: 0,
+        searchTerm: "",
+        posts: [],
       },
     };
 
@@ -78,24 +109,31 @@ describe("PostList Component", () => {
   });
 
   test("renders posts correctly", () => {
+    const mockPosts = [
+      {
+        id: 1,
+        title: "Test Post 1",
+        body: "This is test post 1",
+        userId: 1,
+      },
+      {
+        id: 2,
+        title: "Test Post 2",
+        body: "This is test post 2",
+        userId: 1,
+      },
+    ];
+
     const initialState = {
       posts: {
-        filteredPosts: [
-          {
-            id: 1,
-            title: "Test Post 1",
-            body: "This is test post 1",
-            userId: 1,
-          },
-          {
-            id: 2,
-            title: "Test Post 2",
-            body: "This is test post 2",
-            userId: 1,
-          },
-        ],
+        filteredPosts: mockPosts,
+        posts: mockPosts,
         status: "succeeded",
         error: null,
+        currentPage: 1,
+        postsPerPage: 6,
+        totalPages: 1,
+        searchTerm: "",
       },
     };
 

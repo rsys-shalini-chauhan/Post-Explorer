@@ -1,6 +1,16 @@
 # Post Explorer
 
-A modern React application that allows users to browse and search through posts fetched from an API, with detailed views for each post.
+A modern React application built with Vite that allows users to browse and search through posts fetched from an API, with detailed views for each post.
+
+## About React + Vite
+
+This project leverages the power of [React](https://react.dev/) with [Vite](https://vitejs.dev/) as the build tool. Vite offers several advantages:
+
+- **Super Fast HMR**: Lightning-fast hot module replacement during development
+- **Optimized Build**: Efficient production builds with automatic code splitting
+- **TypeScript Support**: First-class TypeScript integration without additional configuration
+- **CSS Processing**: Built-in CSS processing with PostCSS support
+- **Dev Server**: Optimized development server with instant startup
 
 ## Features
 
@@ -93,7 +103,3 @@ The application includes tests written with Vitest and React Testing Library. To
 ```
 npm test
 ```
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.

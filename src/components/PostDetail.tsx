@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchPostById } from "../services/api";
 import { Post } from "../types";
+import SkeletonPostDetail from "./SkeletonPostDetail";
 
 interface PostDetailProps {
   postId: string;
@@ -10,8 +11,11 @@ const PostDetail = ({ postId }: PostDetailProps) => {
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const fetchedRef = useRef(false);
 
   useEffect(() => {
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
     const loadPost = async () => {
       try {
         setLoading(true);
@@ -28,7 +32,7 @@ const PostDetail = ({ postId }: PostDetailProps) => {
   }, [postId]);
 
   if (loading) {
-    return <div className="loading">Loading post details...</div>;
+    return <SkeletonPostDetail />;
   }
 
   if (error) {

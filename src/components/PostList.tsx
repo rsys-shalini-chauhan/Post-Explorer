@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../redux/postSlice";
 import { RootState } from "../redux/store";
@@ -11,9 +11,11 @@ const PostList = () => {
   const { filteredPosts, status, error } = useSelector(
     (state: RootState) => state.posts
   );
+  const fetchedRef = useRef(false);
 
   useEffect(() => {
-    if (status === "idle") {
+    if (status === "idle" && !fetchedRef.current) {
+      fetchedRef.current = true;
       dispatch(fetchPosts());
     }
   }, [status, dispatch]);

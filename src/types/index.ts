@@ -11,4 +11,7 @@ export interface PostsState {
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   searchTerm: string;
+  currentPage: number;
+  postsPerPage: number;
+  totalPages: number;
 }

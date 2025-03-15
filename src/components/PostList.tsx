@@ -1,17 +1,23 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPosts } from "../redux/postSlice";
+import { fetchPosts, setCurrentPage } from "../redux/postSlice";
 import { RootState } from "../redux/store";
 import PostCard from "./PostCard";
 import SkeletonCard from "./SkeletonCard";
+import Pagination from "./Pagination";
 import { AppDispatch } from "../redux/store";
 import styles from "./PostList.module.css";
 
 const PostList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { filteredPosts, status, error } = useSelector(
-    (state: RootState) => state.posts
-  );
+  const {
+    filteredPosts,
+    status,
+    error,
+    currentPage,
+    postsPerPage,
+    totalPages,
+  } = useSelector((state: RootState) => state.posts);
   const fetchedRef = useRef(false);
 
   useEffect(() => {
@@ -20,6 +26,15 @@ const PostList = () => {
       dispatch(fetchPosts());
     }
   }, [status, dispatch]);
+
+  const handlePageChange = (page: number) => {
+    dispatch(setCurrentPage(page));
+  };
+
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   if (status === "loading") {
     return (
@@ -42,11 +57,18 @@ const PostList = () => {
   }
 
   return (
-    <div className={styles.postList}>
-      {filteredPosts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
-    </div>
+    <>
+      <div className={styles.postList}>
+        {currentPosts.map((post) => (
+          <PostCard key={post.id} post={post} />
+        ))}
+      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
+    </>
   );
 };
 

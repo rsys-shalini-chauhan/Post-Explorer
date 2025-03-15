@@ -8,6 +8,9 @@ const initialState: PostsState = {
   status: "idle",
   error: null,
   searchTerm: "",
+  currentPage: 1,
+  postsPerPage: 6,
+  totalPages: 0,
 };
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
@@ -26,6 +29,21 @@ const postsSlice = createSlice({
           post.title.toLowerCase().includes(action.payload.toLowerCase()) ||
           post.body.toLowerCase().includes(action.payload.toLowerCase())
       );
+      state.currentPage = 1;
+      state.totalPages = Math.ceil(
+        state.filteredPosts.length / state.postsPerPage
+      );
+    },
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
+    setPostsPerPage: (state, action: PayloadAction<number>) => {
+      state.postsPerPage = action.payload;
+      state.totalPages = Math.ceil(state.filteredPosts.length / action.payload);
+      // Reset to page 1 if current page is beyond new total
+      if (state.currentPage > state.totalPages) {
+        state.currentPage = 1;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -37,6 +55,9 @@ const postsSlice = createSlice({
         state.status = "succeeded";
         state.posts = action.payload;
         state.filteredPosts = action.payload;
+        state.totalPages = Math.ceil(
+          action.payload.length / state.postsPerPage
+        );
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "failed";
@@ -45,5 +66,6 @@ const postsSlice = createSlice({
   },
 });
 
-export const { setSearchTerm } = postsSlice.actions;
+export const { setSearchTerm, setCurrentPage, setPostsPerPage } =
+  postsSlice.actions;
 export default postsSlice.reducer;
